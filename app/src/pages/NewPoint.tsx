@@ -1,6 +1,7 @@
 import React, { FormEvent, useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import Modal from 'react-modal';
+import { Chart } from "react-google-charts";
 
 import api from '../services/api';
 
@@ -105,7 +106,7 @@ export default function NewPoint() {
           contentLabel="Example Modal"
         >
           <div className="model-text">
-            <strong>Preço: </strong>
+            <strong>Preço de Venda: </strong>
             <span>{
               Intl.NumberFormat(
                 'pt-BR', 
@@ -142,8 +143,78 @@ export default function NewPoint() {
           </div>
           <div className="model-text">
             <strong>Ponto de Equilíbrio: </strong>
-            <span>{modalText.breakevenPoint}</span>
+            <span>{Number(modalText.breakevenPoint).toFixed(2)}</span>
           </div>
+          <Chart
+            width={'600px'}
+            height={'300px'}
+            chartType="LineChart"
+            loader={<div>Loading Chart</div>}
+            data={[
+              [
+                'x', 
+                'Receita', 
+                'Custo Total'
+              ],
+              [
+                0, 
+                0, 
+                0
+              ],
+              [
+                1000, 
+                1000 * Number(modalText.cost), 
+                1000 * Number(modalText.variableCost) + Number(modalText.fixedCost)
+              ],
+              [
+                2000, 
+                2000 * Number(modalText.cost), 
+                2000 * Number(modalText.variableCost) + Number(modalText.fixedCost)
+              ],
+              [
+                3000, 
+                3000 * Number(modalText.cost), 
+                3000 * Number(modalText.variableCost) + Number(modalText.fixedCost)
+              ],
+              [
+                4000, 
+                4000 * Number(modalText.cost), 
+                4000 * Number(modalText.variableCost) + Number(modalText.fixedCost)
+              ],
+              [
+                5000, 
+                5000 * Number(modalText.cost), 
+                5000 * Number(modalText.variableCost) + Number(modalText.fixedCost)
+              ],
+              [
+                6000, 
+                6000 * Number(modalText.cost), 
+                6000 * Number(modalText.variableCost) + Number(modalText.fixedCost)
+              ],
+              [
+                7000, 
+                7000 * Number(modalText.cost), 
+                7000 * Number(modalText.variableCost) + Number(modalText.fixedCost)
+              ],
+              [
+                8000, 
+                8000 * Number(modalText.cost), 
+                8000 * Number(modalText.variableCost) + Number(modalText.fixedCost)
+              ],
+            ]}
+            options={{
+              hAxis: {
+                title: 'Quantidade',
+              },
+              vAxis: {
+                title: 'R$',
+              },
+              series: {
+                1: { curveType: 'function' },
+              },
+            }}
+            rootProps={{ 'data-testid': '2' }}
+          />
           <div className="model-save">
             <span>Deseja Salvar Cálculo?</span>
             <div className="model-save-button">
@@ -168,7 +239,7 @@ export default function NewPoint() {
                 onChange={ e => setDescription(e.target.value)}
             />
             <input 
-                placeholder="Preço"
+                placeholder="Preço de Venda"
                 value={cost}
                 onChange={ e => setCost(e.target.value)}
                 type="number"

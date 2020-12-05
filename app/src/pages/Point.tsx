@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useHistory, Link } from 'react-router-dom';
 import { FiPower, FiTrash2 } from 'react-icons/fi';
 import Modal from 'react-modal';
+import { Chart } from "react-google-charts";
 
 import api from '../services/api';
 
@@ -22,11 +23,28 @@ if (typeof(window) !== 'undefined') {
   Modal.setAppElement('body')
 }
 
+interface IModalText {
+  cost: number,
+  variableCost: number,
+  fixedCost: number,
+  margin: number,
+  breakevenPoint: number
+}
+
 export default function Home() {
   const userId = localStorage.getItem('userId');
   const userName = localStorage.getItem('userName');
 
   const [modalIsOpen,setIsOpen] = useState(false);
+  const [modalDetailsIsOpen,setDetailsIsOpen] = useState(false);
+  const [modalText, setModalText] = useState<IModalText>({
+    cost: 0,
+    variableCost: 0,
+    fixedCost: 0,
+    margin: 0,
+    breakevenPoint: 0
+  });
+
 
   const [listPoint, setListPoint] = useState<IListPoint[]>([]);
   const [idPoint, setIdPoint] = useState<number>();
@@ -51,6 +69,10 @@ export default function Home() {
 
   function closeModal(){
     setIsOpen(false);
+  }
+
+  function closeModalDetails() {
+    setDetailsIsOpen(false);
   }
 
   function openModalRemove(id: number) {
@@ -79,6 +101,24 @@ export default function Home() {
     }
   }
 
+  async function openModalDetails(
+    cost: number,
+    variableCost: number,
+    fixedCost: number,
+    margin: number,
+    breakevenPoint: number
+  ) {
+    setModalText({
+      cost,
+      variableCost,
+      fixedCost,
+      margin,
+      breakevenPoint
+    });
+
+    setDetailsIsOpen(true);
+  }
+
   function handleLogout() {
     localStorage.clear();
     history.push('/');
@@ -86,6 +126,124 @@ export default function Home() {
 
   return(
     <div className="profile-container">
+      <Modal
+        isOpen={modalDetailsIsOpen}
+        onRequestClose={closeModalDetails}
+        className="modal"
+        contentLabel="Detalhes"
+      >
+        <div className="model-text">
+          <strong>Preço de Venda: </strong>
+          <span>{
+            Intl.NumberFormat(
+              'pt-BR', 
+              { style: 'currency', currency: 'BRL'}
+            ).format(Number(modalText.cost))
+          }</span>
+        </div>
+        <div className="model-text">
+          <strong>Custo Variável: </strong>
+          <span>{
+            Intl.NumberFormat(
+              'pt-BR', 
+              { style: 'currency', currency: 'BRL'}
+            ).format(Number(modalText.variableCost))
+          }</span>
+        </div>
+        <div className="model-text">
+          <strong>Custo Fixo: </strong>
+          <span>{
+            Intl.NumberFormat(
+              'pt-BR', 
+              { style: 'currency', currency: 'BRL'}
+            ).format(Number(modalText.fixedCost))
+          }</span>
+        </div>
+        <div className="model-text">
+          <strong>Margem: </strong>
+          <span>{
+            Intl.NumberFormat(
+              'pt-BR', 
+              { style: 'currency', currency: 'BRL'}
+            ).format(Number(modalText.margin))
+          }</span>
+        </div>
+          <div className="model-text">
+            <strong>Ponto de Equilíbrio: </strong>
+            <span>{Number(modalText.breakevenPoint).toFixed(2)}</span>
+          </div>
+          <Chart
+            width={'600px'}
+            height={'300px'}
+            chartType="LineChart"
+            loader={<div>Loading Chart</div>}
+            data={[
+              [
+                'x', 
+                'Receita', 
+                'Custo Total'
+              ],
+              [
+                0, 
+                0, 
+                0
+              ],
+              [
+                1000, 
+                1000 * Number(modalText.cost), 
+                1000 * Number(modalText.variableCost) + Number(modalText.fixedCost)
+              ],
+              [
+                2000, 
+                2000 * Number(modalText.cost), 
+                2000 * Number(modalText.variableCost) + Number(modalText.fixedCost)
+              ],
+              [
+                3000, 
+                3000 * Number(modalText.cost), 
+                3000 * Number(modalText.variableCost) + Number(modalText.fixedCost)
+              ],
+              [
+                4000, 
+                4000 * Number(modalText.cost), 
+                4000 * Number(modalText.variableCost) + Number(modalText.fixedCost)
+              ],
+              [
+                5000, 
+                5000 * Number(modalText.cost), 
+                5000 * Number(modalText.variableCost) + Number(modalText.fixedCost)
+              ],
+              [
+                6000, 
+                6000 * Number(modalText.cost), 
+                6000 * Number(modalText.variableCost) + Number(modalText.fixedCost)
+              ],
+              [
+                7000, 
+                7000 * Number(modalText.cost), 
+                7000 * Number(modalText.variableCost) + Number(modalText.fixedCost)
+              ],
+              [
+                8000, 
+                8000 * Number(modalText.cost), 
+                8000 * Number(modalText.variableCost) + Number(modalText.fixedCost)
+              ],
+            ]}
+            options={{
+              hAxis: {
+                title: 'Quantidade',
+              },
+              vAxis: {
+                title: 'R$',
+              },
+              series: {
+                1: { curveType: 'function' },
+              },
+            }}
+            rootProps={{ 'data-testid': '2' }}
+          />
+          <button className="button-details" onClick={() => setDetailsIsOpen(false)}>Fecha</button>
+      </Modal>
       <Modal
           isOpen={modalIsOpen}
           onRequestClose={closeModal}
@@ -105,13 +263,13 @@ export default function Home() {
           <span>Bem vindo(a), {userName}</span>
 
           <Link to="/new" className="button">
-            Novo Ponto de Equilíbrio
+            Calcular Ponto de Equilíbrio
           </Link>
           <button type="submit" onClick={handleLogout}>
               <FiPower size={18} color="#e02041" />
           </button>
       </header>
-      <h1>Ponto de Equilíbrio Cadastrados</h1>
+      <h1>Cálculos Cadastrados</h1>
       <ul>
         {listPoint.map(item => (
           <li key={item.id}>
@@ -120,7 +278,7 @@ export default function Home() {
               <span className="text-description">{item.description}</span>
             </div>
             <div className="point-items">
-              <strong>Preço: </strong>
+              <strong>Preço de Venda: </strong>
               <span>{
                 Intl.NumberFormat(
                   'pt-BR', 
@@ -157,9 +315,21 @@ export default function Home() {
             </div>
             <div className="point-items">
               <strong>Ponto de Equilíbrio: </strong>
-              <span>{item.breakevenPoint}</span>
+              <span>{item.breakevenPoint.toFixed(2)}</span>
             </div>
-            <button type="submit" onClick={() => openModalRemove(item.id)}>
+            <button 
+              className="button-details" 
+              onClick={() => openModalDetails(
+                item.cost,
+                item.variableCost,
+                item.fixedCost,
+                item.margin,
+                item.breakevenPoint
+              )}
+            >
+              Mais Detalhes 
+            </button>
+            <button className="button-delete" onClick={() => openModalRemove(item.id)}>
               <FiTrash2 size={32} color="#a8a8b3" />
             </button>
           </li>

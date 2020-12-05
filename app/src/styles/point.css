@@ -62,7 +62,24 @@
   position: relative;
 }
 
-.profile-container ul li button {
+.button-details {
+  width: 130px;
+  height: 20px;
+  background: #e02041;
+  border: 0;
+  border-radius: 5px;
+  color: #ffffff;
+  margin-top: 10px;
+  font-weight: 700;
+  font-size: 14px;
+  transition: filter 0.2s;
+}
+
+.button-details:hover {
+  filter: brightness(90%);
+}
+
+.profile-container ul li .button-delete {
   background: transparent;
   position: absolute;
   right: 24px;
@@ -71,7 +88,7 @@
   transition: opacity 0.2s;
 }
 
-.profile-container ul li button:hover {
+.profile-container ul li .button-delete:hover {
   opacity: 0.8;
 }
 
