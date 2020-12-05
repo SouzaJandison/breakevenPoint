@@ -1,0 +1,134 @@
+@import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap');
+
+.profile-container {
+  width: 100%;
+  max-width: w 1180px;
+  padding: 0 30px;
+  margin: 32px auto;
+}
+
+.logo-main {
+  font: 400 38px Luckiest Guy, sans-serif;
+  color: #e02041;
+  margin-right: 10px;
+}
+
+.profile-container header {
+  display: flex;
+  align-items: center;
+}
+
+.profile-container header span {
+  font-size: 20px;
+  margin-left: 24px;
+}
+
+.profile-container header a {
+  width: 260px;
+  margin-left: auto;
+  margin-top: 0;
+}
+
+.profile-container header button {
+  height: 60px;
+  width: 60px;
+  border-radius: 4px;
+  border: 1px solid #dcdce6;
+  background: transparent;
+  margin-left: 16px;
+  transition: border-color 0.2s;
+}
+
+.profile-container header button:hover {
+  border-color: #999;
+}
+
+.profile-container h1 {
+  margin-top: 80px;
+  margin-bottom: 24px;
+}
+
+.profile-container ul {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 24px;
+  list-style: none;
+}
+
+.profile-container ul li {
+  background: #fff;
+  padding: 24px;
+  border-radius: 8px;
+  position: relative;
+}
+
+.profile-container ul li button {
+  background: transparent;
+  position: absolute;
+  right: 24px;
+  top: 24px;
+  border: 0;
+  transition: opacity 0.2s;
+}
+
+.profile-container ul li button:hover {
+  opacity: 0.8;
+}
+
+.profile-container ul li .point-items {
+  display: flex;
+  justify-content: space-between;
+  width: 400px;
+  margin-bottom: 5px;
+  font-size: 16px;
+  color: #41414d;
+}
+
+.profile-container ul li .point-items .text-description {
+  display: flex;
+  justify-content: flex-end;
+  white-space: nowrap; 
+  width: 310px; 
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.modal-remove {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  left: 25%;
+  top: 30%;
+  width: 50%;
+  font-size: 26px;
+  color: #000;
+  background: #f0f0f5;
+  opacity: 0.8;
+  border-radius: 20px;
+  transform: 'translate(-50%, -50%)';
+}
+
+.model-button {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.model-button button {
+  padding: 5px 10px;
+  background: #e02041;
+  border: 0;
+  border-radius: 8px;
+  color: #ffffff;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  font-size: 18px;
+  transition: filter 0.2s;
+}
+
+.model-button button:hover {
+  filter: brightness(90%);
+}

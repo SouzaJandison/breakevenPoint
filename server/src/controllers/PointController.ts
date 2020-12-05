@@ -6,21 +6,15 @@ import { schemaPointCreate } from '../validations/pointValidation';
 
 class PointController {
   async create(req: Request, res: Response) {
-    const { description, cost, variableCost, fixedCost, id_user } = req.body;
-    await schemaPointCreate.validate({
+    const { 
       description, 
       cost, 
       variableCost, 
       fixedCost, 
-      id_user
-    }, {
-      abortEarly: false
-    })
-
-    const pointRepository = getRepository(Point);
-
-    const margin = cost - variableCost;
-    const breakevenPoint = fixedCost / ( cost - variableCost );
+      margin,
+      breakevenPoint,
+      id_user 
+    } = req.body;
 
     const data = {
       description,
@@ -31,6 +25,12 @@ class PointController {
       breakevenPoint,
       id_user
     }
+
+    await schemaPointCreate.validate(data, {
+      abortEarly: false
+    })
+
+    const pointRepository = getRepository(Point);
 
     const point = pointRepository.create(data);
     await pointRepository.save(point);
@@ -50,7 +50,8 @@ class PointController {
   async delete(req: Request, res: Response) {
     const { id } = req.params;
     const id_user = req.headers.authorization;
-    console.log(id_user)
+    
+    console.log(id, id_user)
     const pointRepository = getRepository(Point);
 
     const point = await pointRepository.findOne({ where: { id } });
