@@ -24,6 +24,7 @@ if (typeof(window) !== 'undefined') {
 }
 
 interface IModalText {
+  description: string,
   cost: number,
   variableCost: number,
   fixedCost: number,
@@ -38,13 +39,13 @@ export default function Home() {
   const [modalIsOpen,setIsOpen] = useState(false);
   const [modalDetailsIsOpen,setDetailsIsOpen] = useState(false);
   const [modalText, setModalText] = useState<IModalText>({
+    description: '',
     cost: 0,
     variableCost: 0,
     fixedCost: 0,
     margin: 0,
     breakevenPoint: 0
   });
-
 
   const [listPoint, setListPoint] = useState<IListPoint[]>([]);
   const [idPoint, setIdPoint] = useState<number>();
@@ -102,6 +103,7 @@ export default function Home() {
   }
 
   async function openModalDetails(
+    description: string,
     cost: number,
     variableCost: number,
     fixedCost: number,
@@ -109,6 +111,7 @@ export default function Home() {
     breakevenPoint: number
   ) {
     setModalText({
+      description,
       cost,
       variableCost,
       fixedCost,
@@ -132,6 +135,10 @@ export default function Home() {
         className="modal"
         contentLabel="Detalhes"
       >
+        <div className="model-text">
+          <strong>Descrição: </strong>
+          <span>{modalText.description}</span>
+        </div>
         <div className="model-text">
           <strong>Preço de Venda: </strong>
           <span>{
@@ -168,81 +175,81 @@ export default function Home() {
             ).format(Number(modalText.margin))
           }</span>
         </div>
-          <div className="model-text">
-            <strong>Ponto de Equilíbrio: </strong>
-            <span>{Number(modalText.breakevenPoint).toFixed(2)}</span>
-          </div>
-          <Chart
-            width={'600px'}
-            height={'300px'}
-            chartType="LineChart"
-            loader={<div>Loading Chart</div>}
-            data={[
-              [
-                'x', 
-                'Receita', 
-                'Custo Total'
-              ],
-              [
-                0, 
-                0, 
-                0
-              ],
-              [
-                1000, 
-                1000 * Number(modalText.cost), 
-                1000 * Number(modalText.variableCost) + Number(modalText.fixedCost)
-              ],
-              [
-                2000, 
-                2000 * Number(modalText.cost), 
-                2000 * Number(modalText.variableCost) + Number(modalText.fixedCost)
-              ],
-              [
-                3000, 
-                3000 * Number(modalText.cost), 
-                3000 * Number(modalText.variableCost) + Number(modalText.fixedCost)
-              ],
-              [
-                4000, 
-                4000 * Number(modalText.cost), 
-                4000 * Number(modalText.variableCost) + Number(modalText.fixedCost)
-              ],
-              [
-                5000, 
-                5000 * Number(modalText.cost), 
-                5000 * Number(modalText.variableCost) + Number(modalText.fixedCost)
-              ],
-              [
-                6000, 
-                6000 * Number(modalText.cost), 
-                6000 * Number(modalText.variableCost) + Number(modalText.fixedCost)
-              ],
-              [
-                7000, 
-                7000 * Number(modalText.cost), 
-                7000 * Number(modalText.variableCost) + Number(modalText.fixedCost)
-              ],
-              [
-                8000, 
-                8000 * Number(modalText.cost), 
-                8000 * Number(modalText.variableCost) + Number(modalText.fixedCost)
-              ],
-            ]}
-            options={{
-              hAxis: {
-                title: 'Quantidade',
-              },
-              vAxis: {
-                title: 'R$',
-              },
-              series: {
-                1: { curveType: 'function' },
-              },
-            }}
-            rootProps={{ 'data-testid': '2' }}
-          />
-          <button className="button-details" onClick={() => setDetailsIsOpen(false)}>Fecha</button>
+        <div className="model-text">
+          <strong>Ponto de Equilíbrio: </strong>
+          <span>{Number(modalText.breakevenPoint).toFixed(2)}</span>
+        </div>
+        <Chart
+          width={'600px'}
+          height={'300px'}
+          chartType="LineChart"
+          loader={<div>Loading Chart</div>}
+          data={[
+            [
+              'x', 
+              'Receita', 
+              'Custo Total'
+            ],
+            [
+              0, 
+              0, 
+              0
+            ],
+            [
+              1000, 
+              1000 * Number(modalText.cost), 
+              1000 * Number(modalText.variableCost) + Number(modalText.fixedCost)
+            ],
+            [
+              2000, 
+              2000 * Number(modalText.cost), 
+              2000 * Number(modalText.variableCost) + Number(modalText.fixedCost)
+            ],
+            [
+              3000, 
+              3000 * Number(modalText.cost), 
+              3000 * Number(modalText.variableCost) + Number(modalText.fixedCost)
+            ],
+            [
+              4000, 
+              4000 * Number(modalText.cost), 
+              4000 * Number(modalText.variableCost) + Number(modalText.fixedCost)
+            ],
+            [
+              5000, 
+              5000 * Number(modalText.cost), 
+              5000 * Number(modalText.variableCost) + Number(modalText.fixedCost)
+            ],
+            [
+              6000, 
+              6000 * Number(modalText.cost), 
+              6000 * Number(modalText.variableCost) + Number(modalText.fixedCost)
+            ],
+            [
+              7000, 
+              7000 * Number(modalText.cost), 
+              7000 * Number(modalText.variableCost) + Number(modalText.fixedCost)
+            ],
+            [
+              8000, 
+              8000 * Number(modalText.cost), 
+              8000 * Number(modalText.variableCost) + Number(modalText.fixedCost)
+            ],
+          ]}
+          options={{
+            hAxis: {
+              title: 'Quantidade',
+            },
+            vAxis: {
+              title: 'R$',
+            },
+            series: {
+              1: { curveType: 'function' },
+            },
+          }}
+          rootProps={{ 'data-testid': '2' }}
+        />
+        <button className="button-details" onClick={() => setDetailsIsOpen(false)}>Fecha</button>
       </Modal>
       <Modal
           isOpen={modalIsOpen}
@@ -320,6 +327,7 @@ export default function Home() {
             <button 
               className="button-details" 
               onClick={() => openModalDetails(
+                item.description,
                 item.cost,
                 item.variableCost,
                 item.fixedCost,
