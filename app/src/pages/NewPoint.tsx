@@ -60,7 +60,7 @@ export default function NewPoint() {
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
 
-    if(cost != undefined && variableCost != undefined && fixedCost != undefined) {
+    if(cost !== undefined && variableCost !== undefined && fixedCost !== undefined) {
       const marginNumber = '' + (Number(cost) - Number(variableCost));
       const breakevenPointNumber = '' + (Number(fixedCost) / Number(marginNumber));
       setMargin(marginNumber);
